@@ -1,11 +1,48 @@
 
-class App extends React.Component {
 
+const Stars = (props) => {
+  return (
+    <div>
+      ......
+    </div>
+  );
+};
 
+const Button = (props) => {
+  return (
+    <div>
+      ......
+    </div>
+  );
+};
+
+const Answer = (props) => {
+  return (
+    <div>
+      ......
+    </div>
+  );
+};
+
+class Game extends React.Component {
   render() {
     return (
       <div>
-          tetris
+          <h3>Play Nine</h3>
+          <Stars />
+          <Button />
+          <Answer />
+      </div>
+    );
+  };
+};
+
+
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+          <Game />
       </div>
     );
   };
