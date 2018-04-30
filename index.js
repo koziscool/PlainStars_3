@@ -14,27 +14,73 @@ const Card = (props) => {
 }
 
 
-let data = [
-  {
-    name: 'john kosmicke',
-    company: 'tetris', 
-    avatar_url: 'https://avatars1.githubusercontent.com/u/1393010?v=4'
-  }
-];
-
 class CardList extends React.Component {
+  render() {
+    return (
+      <div>
+        { this.props.cards.map( card => <Card key={card.id} {...card} />) }
+      </div>
+    );
+  };
+};
+
+class Form extends React.Component {
+
+  state = { userName: '', }
+
+  handleSubmit = (e) => { 
+    e.preventDefault();
+    const  theUrl = "https://api.github.com/users/" + this.state.userName;
+    let http = new XMLHttpRequest();
+    http.onreadystatechange = () => {
+      if( http.readyState === 4 && http.status === 200 ){
+        this.props.onSubmit( JSON.parse( http.responseText ));
+        this.setState( { userName: ''} )
+      }
+    };
+
+    http.open( "GET", theUrl, true ); 
+    http.send( null );
+  };
+
+  render() {
+    return (
+      <form onSubmit={ this.handleSubmit }>
+        <input type="text" 
+                      value={ this.state.userName }
+                      onChange={  e => this.setState({ userName: e.target.value}) }
+                      placeholder="Github username" 
+                      required />
+        <button type="submit">Add card</button>
+      </form>
+    );
+  };
+};
+
+class App extends React.Component {
+  state = {
+    cards: [],
+  } 
+
+  addNewCard = (cardInfo) => {
+    this.setState( prevState => ({
+      cards: prevState.cards.concat( cardInfo ),
+    }));
+  };
+
 
   render() {
     return (
       <div>
-        { this.props.cards.map( card => <Card {...card} />) }
+      <Form onSubmit={ this.addNewCard } />
+        <CardList cards={this.state.cards} />
       </div>
     );
   };
-}
+};
 
 ReactDOM.render(
-  <CardList cards={data} />,
+  <App />,
   document.getElementById('root')
 );
 
