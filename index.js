@@ -16,11 +16,28 @@ class Button extends React.Component {
       <button onClick={ this.handleClick }>{ this.state.counter }</button>
     );
   };
+};
+
+const Result = (props) => {
+  console.log('tetris');
+  return (
+    <div>...</div>
+  );
+};
+
+class App extends React.Component {
+ render() {
+    return (
+      <div>
+        <Button />
+        <Result />
+      </div>
+    );
+  };
 }
 
-
 ReactDOM.render(
-  <Button />,
+  <App />,
   document.getElementById('root')
 );
 
