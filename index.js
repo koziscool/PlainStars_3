@@ -18,8 +18,8 @@ const Stars = (props) => {
 
 const Button = (props) => {
   return (
-    <div className="col-2 btn">
-      <button>=</button>
+    <div className="col-2">
+      <button className = "btn" disabled={ props.selectedNumbers.length === 0 }>=</button>
     </div>
   );
 };
@@ -28,7 +28,7 @@ const Answer = (props) => {
   return (
     <div className="col-5">
       { props.selectedNumbers.map( ( number, i)=>
-        <span key={i}>{number}</span> ) }
+        <span key={i} onClick={ () => props.unselectNumber(number) }>{number}</span> ) }
     </div>
   );
 };
@@ -68,19 +68,29 @@ class Game extends React.Component {
     }));
   };
 
+  unselectNumber = (clickedNumber) => {
+    this.setState( prevState => ({
+      selectedNumbers: prevState.selectedNumbers.filter( number => number !== clickedNumber ),
+    }));
+  };
+
+
 
   render() {
+    const { selectedNumbers, numberOfStars } = this.state;
+
     return (
       <div className="container">
           <h3>Play Nine</h3>
           <hr />
           <div className="row">
-            <Stars numberOfStars={this.state.numberOfStars} />
-            <Button />
-            <Answer selectedNumbers= {this.state.selectedNumbers} />
+            <Stars numberOfStars={numberOfStars} />
+            <Button selectedNumbers= {selectedNumbers}  />
+            <Answer selectedNumbers= {selectedNumbers} 
+                        unselectNumber={this.unselectNumber}/>
           </div>
           <br />
-          <Numbers selectedNumbers= {this.state.selectedNumbers} 
+          <Numbers selectedNumbers= {selectedNumbers} 
                         selectNumber={this.selectNumber} />
       </div>
     );
